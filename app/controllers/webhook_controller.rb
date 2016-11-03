@@ -15,7 +15,6 @@ class WebhookController < ApplicationController
     event_type = event["type"]
     reply_token = event["replyToken"]
 
-    message = Object.new
     case event_type
       when "message"
         text = event['message']['text']
@@ -33,17 +32,17 @@ class WebhookController < ApplicationController
             message: input_text
         )
         group.save
+
+        client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
+        res = client.reply(reply_token, message.output_message)
+
+        if res.status == 200
+          logger.info({success: res})
+        else
+          logger.info({fail: res})
+        end
       else
         exit 1
-    end
-
-    client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
-    res = client.reply(reply_token, message.output_message)
-
-    if res.status == 200
-      logger.info({success: res})
-    else
-      logger.info({fail: res})
     end
 
     render :nothing => true, status: :ok
