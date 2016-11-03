@@ -1,9 +1,13 @@
 class WebhookController < ApplicationController
-  include Line
   protect_from_forgery with: :null_session
   protect_from_forgery :except => [:callback]
 
+  CHANNEL_SECRET = ENV['LINE_CHANNEL_SECRET']
+  OUTBOUND_PROXY = ENV['OUTBOUND_PROXY']
+  CHANNEL_ACCESS_TOKEN = ENV['LINE_CHANNEL_TOKEN']
+
   def callback
+    include Line
     unless is_validate_signature
       render :nothing => true, status: 470
     end
@@ -12,12 +16,9 @@ class WebhookController < ApplicationController
     event_type = event["type"]
     replyToken = event["replyToken"]
 
-    p event
     case event_type
       when "message"
-        text = event['message']['text']
-        exit 1 if text.nil?
-        if  /運勢|占う/ =~ text
+        if event.message['text'].include?(["運勢", '占う'])
           redirect_to '/fortune'
         end
 
@@ -27,12 +28,19 @@ class WebhookController < ApplicationController
         output_text = input_text
         group = Group.where(:line_group_id => line_group_id).first_or_initialize
         group.talks.build(
-            :message => input_text
+            message: input_text
         )
         group.save
     end
 
-    self.reply(output_text, replyToken)
+    client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
+    res = client.reply(replyToken, output_text)
+
+    if res.status == 200
+      logger.info({success: res})
+    else
+      logger.info({fail: res})
+    end
 
     render :nothing => true, status: :ok
   end
