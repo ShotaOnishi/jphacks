@@ -16,11 +16,13 @@ class WebhookController < ApplicationController
 
     case event_type
       when "message"
-        p "AAAA"
-        p event['message']
-        p event['source']['groupId']
         input_text = event["message"]["text"]
+        group_id = event['source']['group_id']
         output_text = input_text
+        talk = Talk.new(:group_id => group_id, :message => input_text)
+        group = Group.new(:group_id => group_id)
+        talk.save
+        group.save
     end
 
     client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
