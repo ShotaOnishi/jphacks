@@ -23,7 +23,6 @@ class WebhookController < ApplicationController
         else
           message = ResponceMessage.new(DefaultMessage.new)
         end
-        p message
 
         # history of talk
         input_text = event["message"]["text"]
@@ -33,6 +32,9 @@ class WebhookController < ApplicationController
             message: input_text
         )
         group.save
+
+        p message
+        p message.output_message
 
         client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
         res = client.reply(reply_token, message.output_message)
