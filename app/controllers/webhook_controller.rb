@@ -15,9 +15,10 @@ class WebhookController < ApplicationController
     replyToken = event["replyToken"]
 
     case event_type
-    when "message"
-      input_text = event["message"]["text"]
-      output_text = input_text
+      when "message"
+        p event
+        input_text = event["message"]["text"]
+        output_text = input_text
     end
 
     client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
