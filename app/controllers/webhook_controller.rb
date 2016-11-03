@@ -1,9 +1,9 @@
 class WebhookController < ApplicationController
+  include Line
   protect_from_forgery with: :null_session
   protect_from_forgery :except => [:callback]
 
   def callback
-    include Line
     unless is_validate_signature
       render :nothing => true, status: 470
     end
@@ -29,13 +29,9 @@ class WebhookController < ApplicationController
         group.save
     end
 
-    Line.reply(output_text)
+    reply(output_text)
 
     render :nothing => true, status: :ok
-  end
-
-  def redirect
-
   end
 
   private
