@@ -23,6 +23,7 @@ class WebhookController < ApplicationController
         else
           message = ResponceMessage.new(DefaultMessage.new)
         end
+        p message
 
         # history of talk
         input_text = event["message"]["text"]
