@@ -32,7 +32,7 @@ class WebhookController < ApplicationController
         group.save
     end
 
-    reply(output_text, replyToken)
+    LINE.reply(output_text, replyToken)
 
     render :nothing => true, status: :ok
   end
