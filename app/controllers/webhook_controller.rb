@@ -2,10 +2,6 @@ class WebhookController < ApplicationController
   protect_from_forgery with: :null_session
   protect_from_forgery :except => [:callback]
 
-  CHANNEL_SECRET = ENV['LINE_CHANNEL_SECRET']
-  OUTBOUND_PROXY = ENV['OUTBOUND_PROXY']
-  CHANNEL_ACCESS_TOKEN = ENV['LINE_CHANNEL_TOKEN']
-
   def callback
     include Line
     unless is_validate_signature
@@ -18,7 +14,8 @@ class WebhookController < ApplicationController
 
     case event_type
       when "message"
-        if event.message['text'].include?("運勢")
+        if event.message['text'].include?(["運勢", '占う'])
+          redirect_to '/uranai'
         end
 
         // history of talk
