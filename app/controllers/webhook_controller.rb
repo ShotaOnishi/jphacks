@@ -12,9 +12,10 @@ class WebhookController < ApplicationController
     event_type = event["type"]
     replyToken = event["replyToken"]
 
+    p event
     case event_type
       when "message"
-        if event.message['text'].include?(["運勢", '占う'])
+        if event['text'].include?(["運勢", '占う'])
           redirect_to '/fortune'
         end
 
