@@ -13,27 +13,32 @@ class WebhookController < ApplicationController
 
     event = params["events"][0]
     event_type = event["type"]
-    replyToken = event["replyToken"]
+    reply_token = event["replyToken"]
 
+    message = Object.new
     case event_type
       when "message"
-        if event['message']['text'].include?("運勢")
-          redirect_to '/fortune'
+        text = event['message']['text']
+        if text.include?("運勢")
+          message = ResponceMessage.new(FortuneMessage.new('丼'))
+        else
+          message = ResponceMessage.new(DefaultMessage.new)
         end
 
         # history of talk
         input_text = event["message"]["text"]
         line_group_id = event['source']['groupId']
-        output_text = input_text
         group = Group.where(:line_group_id => line_group_id).first_or_initialize
         group.talks.build(
             message: input_text
         )
         group.save
+      else
+        exit 1
     end
 
     client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
-    res = client.reply(replyToken, output_text)
+    res = client.reply(reply_token, message.output_message)
 
     if res.status == 200
       logger.info({success: res})
