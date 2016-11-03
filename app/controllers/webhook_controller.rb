@@ -7,7 +7,6 @@ class WebhookController < ApplicationController
   CHANNEL_ACCESS_TOKEN = ENV['LINE_CHANNEL_TOKEN']
 
   def callback
-    include Line
     unless is_validate_signature
       render :nothing => true, status: 470
     end
