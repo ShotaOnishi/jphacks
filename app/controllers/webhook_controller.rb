@@ -7,7 +7,6 @@ class WebhookController < ApplicationController
   CHANNEL_ACCESS_TOKEN = ENV['LINE_CHANNEL_TOKEN']
 
   def callback
-
     unless is_validate_signature
       render :nothing => true, status: 470
     end
@@ -19,11 +18,12 @@ class WebhookController < ApplicationController
     case event_type
       when "message"
         input_text = event["message"]["text"]
-        line_group_id = event['source']['group_id']
+        line_group_id = event['source']['groupId']
         output_text = input_text
-        talk = Talk.new(:message => input_text)
-        group = Group.new(:line_group_id => line_group_id)
-        talk.save
+        group = Group.where(:line_group_id => line_group_id).first_or_initialize
+        group.talks.build(
+            message: input_text
+        )
         group.save
     end
 
