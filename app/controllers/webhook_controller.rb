@@ -1,7 +1,7 @@
 class WebhookController < ApplicationController
 
 
-  protect_from_forgery :except => [:callback]
+  protect_from_forgery with: :null_session
 
 
 
@@ -38,7 +38,7 @@ class WebhookController < ApplicationController
     }
   end
   def callback
-    
+
     body = request.body.read
 
     p @client
