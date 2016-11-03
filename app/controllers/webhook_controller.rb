@@ -1,7 +1,6 @@
 class WebhookController < ApplicationController
 
 
-
   def client
     @client ||= Line::Bot::Client.new { |config|
       config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
@@ -9,7 +8,11 @@ class WebhookController < ApplicationController
     }
   end
   def callback
+    
     body = request.body.read
+
+    p @client
+    p body
 
     signature = request.env['HTTP_X_LINE_SIGNATURE']
     unless client.validate_signature(body, signature)
@@ -29,6 +32,7 @@ class WebhookController < ApplicationController
             client.reply_message(event['replyToken'], message)
           when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
             response = client.get_message_content(event.message['id'])
+            p response
             tf = Tempfile.open("content")
             tf.write(response.body)
           end
