@@ -7,6 +7,7 @@ class WebhookController < ApplicationController
   CHANNEL_ACCESS_TOKEN = ENV['LINE_CHANNEL_TOKEN']
 
   def callback
+    include Line
     unless is_validate_signature
       render :nothing => true, status: 470
     end
@@ -17,6 +18,10 @@ class WebhookController < ApplicationController
 
     case event_type
       when "message"
+        if event.message['text'].include?("運勢")
+        end
+
+        // history of talk
         input_text = event["message"]["text"]
         line_group_id = event['source']['groupId']
         output_text = input_text
@@ -27,16 +32,13 @@ class WebhookController < ApplicationController
         group.save
     end
 
-    client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
-    res = client.reply(replyToken, output_text)
-
-    if res.status == 200
-      logger.info({success: res})
-    else
-      logger.info({fail: res})
-    end
+    Line.reply(output_text)
 
     render :nothing => true, status: :ok
+  end
+
+  def redirect
+
   end
 
   private
