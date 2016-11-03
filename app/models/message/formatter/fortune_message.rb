@@ -6,4 +6,6 @@ class FortuneMessage
         text: context.event.message['text']
     }
   end
+
+
 end
