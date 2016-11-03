@@ -17,7 +17,7 @@ class WebhookController < ApplicationController
 
     case event_type
       when "message"
-        if event.message['text'].include?(["運勢", '占う'])
+        if event['message']['text'].include?("運勢")
           redirect_to '/fortune'
         end
 
