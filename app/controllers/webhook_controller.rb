@@ -16,7 +16,9 @@ class WebhookController < ApplicationController
 
     case event_type
       when "message"
-        p event
+        p "AAAA"
+        p event['message']
+        p event['source']['groupId']
         input_text = event["message"]["text"]
         output_text = input_text
     end
