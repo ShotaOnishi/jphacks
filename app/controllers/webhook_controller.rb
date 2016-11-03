@@ -15,10 +15,10 @@ class WebhookController < ApplicationController
     case event_type
       when "message"
         if event.message['text'].include?(["運勢", '占う'])
-          redirect_to '/uranai'
+          redirect_to '/fortune'
         end
 
-        // history of talk
+        # history of talk
         input_text = event["message"]["text"]
         line_group_id = event['source']['groupId']
         output_text = input_text
