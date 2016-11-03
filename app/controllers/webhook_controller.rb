@@ -1,11 +1,13 @@
 class WebhookController < ApplicationController
   protect_from_forgery with: :null_session
+  protect_from_forgery :except => [:callback]
 
   CHANNEL_SECRET = ENV['LINE_CHANNEL_SECRET']
   OUTBOUND_PROXY = ENV['OUTBOUND_PROXY']
   CHANNEL_ACCESS_TOKEN = ENV['LINE_CHANNEL_TOKEN']
 
   def callback
+
     unless is_validate_signature
       render :nothing => true, status: 470
     end
