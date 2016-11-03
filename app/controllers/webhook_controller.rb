@@ -19,7 +19,7 @@ class WebhookController < ApplicationController
       when "message"
         text = event['message']['text']
         if text.include?("運勢")
-          message = ResponceMessage.new(FortuneMessage.new('丼'))
+          message = ResponceMessage.new(FortuneMessage.new)
         else
           message = ResponceMessage.new(DefaultMessage.new)
         end
@@ -41,6 +41,7 @@ class WebhookController < ApplicationController
         else
           logger.info({fail: res})
         end
+
       else
         exit 1
     end

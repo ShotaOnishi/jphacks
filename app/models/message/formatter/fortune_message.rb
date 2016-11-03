@@ -3,9 +3,7 @@ class FortuneMessage
   def output_message(context)
     {
         type: "text",
-        text: context.event.message['text']
+        text: "AAA"
     }
   end
-
-
 end
