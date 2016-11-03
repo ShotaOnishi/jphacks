@@ -5,8 +5,8 @@ module Line
   CHANNEL_ACCESS_TOKEN = ENV['LINE_CHANNEL_TOKEN']
 
   class << self
-    def reply(message)
-      client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
+    def reply(message, replyToken)
+      client = LineClient.new(CHNNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
       res = client.reply(replyToken, message)
 
       if res.status == 200
