@@ -21,7 +21,7 @@ class WebhookController < ApplicationController
         if text.include?("運勢")
           message = ResponceMessage.new(FortuneMessage.new)
         else
-          message = ResponceMessage.new(DefaultMessage.new)
+          message = ResponceMessage.new(DefaultMessage.new, event)
         end
 
         # history of talk
