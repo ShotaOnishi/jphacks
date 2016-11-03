@@ -17,7 +17,7 @@ class WebhookController < ApplicationController
       when "message"
         text = event['message']['text']
         exit 1 if text.nil?
-        if text.include?(["運勢", '占う'])
+        if  /運勢|占う/ =~ text
           redirect_to '/fortune'
         end
 
