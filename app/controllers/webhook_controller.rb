@@ -24,7 +24,7 @@ class WebhookController < ApplicationController
         output_text = input_text
         group = Group.where(:line_group_id => line_group_id).first_or_initialize
         group.talks.build(
-            message: input_text
+            :message => input_text
         )
         group.save
     end
