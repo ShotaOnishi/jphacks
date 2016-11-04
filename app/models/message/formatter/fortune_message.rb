@@ -1,15 +1,30 @@
 require 'date'
-require 'json'
 
 class FortuneMessage
   def output_message(context)
     {
-        type: "text",
-        text: "AAA"
+        "type": "template",
+        "altText": "this is a carousel template",
+        "template": {
+        "type": "carousel",
+        "columns": receive_api
+    }
     }
   end
 
   def receive_api()
-    p JSON.parse(HTTParty.get('http://api.jugemkey.jp/api/horoscope/free'))
+    tmp = HTTParty.get('http://api.jugemkey.jp/api/horoscope/free')['horoscope'][date.today.to_s.gsub('-', '/')]
+    res = tmp.sort_by(|i| i["rank"])
+
+    culums = []
+    for i in b do
+      text = {"thumbnailImageUrl": "http://www.study-style.com/seiza/images/01Aries.png",
+              "title": i['sign'],
+              "text": i['content']
+      }
+      culums.push(text)
+    end
+    culums
   end
+
 end
