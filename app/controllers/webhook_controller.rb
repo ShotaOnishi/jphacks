@@ -13,7 +13,7 @@ class WebhookController < ApplicationController
 
     event = params["events"][0]
     event_type = event["type"]
-    reply_token = event["replyToken"]
+    replyToken = event["replyToken"]
 
     case event_type
       when "message"
@@ -21,7 +21,7 @@ class WebhookController < ApplicationController
         if text.include?("運勢")
           message = ResponceMessage.new(FortuneMessage.new)
         else
-          message = ResponceMessage.new(DefaultMessage.new, event)
+          message.output_text = input_text
         end
 
         # history of talk
@@ -37,7 +37,7 @@ class WebhookController < ApplicationController
     end
 
     client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
-    res = client.reply(reply_token, message.output_message)
+    res = client.reply(replyToken, message.output_message)
 
     if res.status == 200
       logger.info({success: res})
