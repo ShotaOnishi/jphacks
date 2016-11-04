@@ -1,4 +1,5 @@
 require 'date'
+require 'json'
 
 class FortuneMessage
   def output_message(context)
@@ -10,7 +11,7 @@ class FortuneMessage
   end
 
   def receive_api()
-    result = HTTParty.get('http://api.jugemkey.jp/api/horoscope/free')
+    result = JSON.parse(HTTParty.get('http://api.jugemkey.jp/api/horoscope/free'))
     p result[Date.today.to_s.gsub('-', '/')]
   end
 end
