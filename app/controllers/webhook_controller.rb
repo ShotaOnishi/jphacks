@@ -20,15 +20,16 @@ class WebhookController < ApplicationController
         text = event['message']['text']
         if text.include?("運勢")
           message = ResponceMessage.new(FortuneMessage.new)
+          output_text = message.output_message
+        else
+          output_text = text
         end
 
         # history of talk
-        input_text = event["message"]["text"]
-        output_text = input_text
         line_group_id = event['source']['groupId']
         group = Group.where(:line_group_id => line_group_id).first_or_initialize
         group.talks.build(
-            message: input_text
+            message: text
         )
         group.save
       else
