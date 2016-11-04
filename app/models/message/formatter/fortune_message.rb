@@ -10,6 +10,8 @@ class FortuneMessage
   end
 
   def receive_api()
-    HTTParty.get('http://api.jugemkey.jp/api/horoscope/free')
+    result = HTTParty.get('http://api.jugemkey.jp/api/horoscope/free')[Date.today.to_s.gsub('-', '/')]
+
+
   end
 end
