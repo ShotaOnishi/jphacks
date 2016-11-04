@@ -11,6 +11,13 @@ class FortuneMessage
   end
 
   def receive_api()
-    HTTParty.get('http://api.jugemkey.jp/api/horoscope/')
+    today = Date.today
+    year = today.year.to_s
+    month = today.month.to_s
+    day = today.day.to_s
+
+    HTTParty.get('http://api.jugemkey.jp/api/horoscope/free')
+
+
   end
 end
