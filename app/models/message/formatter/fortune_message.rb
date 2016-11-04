@@ -3,12 +3,12 @@ require 'date'
 class FortuneMessage
   def output_message(context)
     {
-        "type": "template",
-        "altText": "this is a carousel template",
-        "template": {
-        "type": "carousel",
-        "columns": receive_api
-    }
+        :type => 'template',
+        :altText => 'this is a carousel template',
+        :template => {
+            :type => 'carousel',
+            :columns => receive_api
+        }
     }
   end
 
@@ -17,10 +17,11 @@ class FortuneMessage
     res = tmp.sort_by(|i| i["rank"])
 
     culums = []
-    for i in b do
-      text = {"thumbnailImageUrl": "http://www.study-style.com/seiza/images/01Aries.png",
-              "title": i['sign'],
-              "text": i['content']
+    for i in res do
+      text = {
+          :thumbnailImageUrl => "http://www.study-style.com/seiza/images/01Aries.png",
+          :title => i['sign'],
+          :text => i['content']
       }
       culums.push(text)
     end
