@@ -20,12 +20,11 @@ class WebhookController < ApplicationController
         text = event['message']['text']
         if text.include?("運勢")
           message = ResponceMessage.new(FortuneMessage.new)
-        else
-          message.output_text = input_text
         end
 
         # history of talk
         input_text = event["message"]["text"]
+        output_text = input_text
         line_group_id = event['source']['groupId']
         group = Group.where(:line_group_id => line_group_id).first_or_initialize
         group.talks.build(
@@ -37,7 +36,7 @@ class WebhookController < ApplicationController
     end
 
     client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
-    res = client.reply(replyToken, message.output_message)
+    res = client.reply(replyToken, output_message)
 
     if res.status == 200
       logger.info({success: res})
