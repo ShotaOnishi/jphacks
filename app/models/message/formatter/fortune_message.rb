@@ -13,7 +13,7 @@ class FortuneMessage
   end
 
   def receive_api()
-    tmp = HTTParty.get('http://api.jugemkey.jp/api/horoscope/free')['horoscope'][date.today.to_s.gsub('-', '/')]
+    tmp = HTTParty.get('http://api.jugemkey.jp/api/horoscope/free')['horoscope'][Date.today.to_s.gsub('-', '/')]
     res = tmp.sort_by{|s| s["rank"]}
 
     culums = []
