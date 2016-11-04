@@ -33,9 +33,6 @@ class WebhookController < ApplicationController
         )
         group.save
 
-        p message
-        p message.output_message
-
         client = LineClient.new(CHANNEL_ACCESS_TOKEN, OUTBOUND_PROXY)
         res = client.reply(reply_token, message.output_message)
 
